@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+
+set -e
+
+if [ -d "go" ];
+then
+    echo "setup: go already exists" 1>&2
+    exit 1
+fi
+
+if [ -f "./gonative" ]
+then
+    GONATIVE="./gonative"
+else
+    GONATIVE="gonative"
+fi
+
+if ! command -v $GONATIVE
+then
+    cat <<_END_ 1>&2
+setup: missing gonative: Install it with "go get github.com/inconshreveable/gonative" or put a gonative binary in this directory ($PWD)
+_END_
+    exit 1
+fi
+
+$GONATIVE
+
+if false
+then
+    mkdir -p go/gopath
+
+    if [ -L "$GOPATH/src" ]
+    then
+        ln -s $GOPATH/src go/gopath/src
+    fi
+fi
+
+export GNAT_GOROOT="$PWD/go" GNAT_GOPATH=
+
+./gnat go get -v github.com/mitchellh/gox
+
+if true
+then
+    if [ ! -e "$HOME/.gnat" ]
+    then
+        ln -s "$PWD" "$HOME/.gnat"
+    fi
+fi
+
+cat <<_END_
+
+ ###########
+ # SUCCESS #
+ ###########
+
+Test with the following:
+
+    ./gnat compile ./test
+    
+_END_

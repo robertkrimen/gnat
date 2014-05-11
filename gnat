@@ -1,0 +1,74 @@
+#!/usr/bin/env bash
+
+if [ -z "$GNAT_GOROOT" ]
+then
+    if [ -z "$GNAT_HOME" ]
+    then
+        if [ -L "$HOME/.gnat" ]
+        then
+            GNAT_HOME=$(readlink $HOME/.gnat)
+        else
+            cat <<_END_ 1>&2
+gnat: \$GNAT_GOROOT is not set
+
+  You can fix this by doing ONE of the following:
+
+    1. Set \$GNAT_GOROOT in your environment
+    2. Set \$GNAT_HOME in your environment
+    3. Symlink the gnat directory to \$HOME/.gnat
+
+_END_
+            exit 1
+        fi
+    fi
+    GNAT_GOROOT="$GNAT_HOME/go"
+fi
+
+if [ ! -d "$GNAT_GOROOT" ]
+then
+    cat <<_END_ 1>&2
+gnat: \$GNAT_GOROOT does not exist
+
+  \$GNAT_GOROOT ($GNAT_GOROOT) should be the go
+  directory built by gonative
+  
+_END_
+    exit 1
+fi
+
+GNAT_GOROOT=$(cd $GNAT_GOROOT && echo $PWD)
+
+# Possibly use existing $GOPATH
+if [ -z "${GNAT_GOPATH+xyzzy}" ]
+then
+    GNAT_GOPATH=$GOPATH
+fi
+
+GOPATH="$GNAT_GOROOT/gopath"
+
+if [ -n "$GNAT_GOPATH" ]
+then
+    GOPATH="$GOPATH:$GNAT_GOPATH"
+fi
+
+PATH="$GNAT_GOROOT/bin:$GNAT_GOROOT/gopath/bin:$PATH"
+
+export GNAT_GOPATH GNAT_GOROOT GOPATH PATH
+
+if [ -z "$*" ]
+then
+    cat <<_END_
+GOPATH=$GOPATH
+GNAT_GOROOT=$GNAT_GOROOT
+GNAT_GOPATH=$GNAT_GOPATH
+_END_
+    exit 0
+fi
+
+if [ "$1" == "compile" ]
+then
+    shift
+    exec gox -os="darwin linux freebsd windows" -arch="386 amd64" "$@"
+fi
+
+exec "$@"
