@@ -20,10 +20,10 @@ Then, make sure you have `gonative` installed. If you have go installed, you can
 
 Or, download a binary:
 
-* [gonative (darwin/386)](https://github.com/robertkrimen/gnat/releases/download/20140511/gonative_darwin_386)
-* [gonative (windows/386)](https://github.com/robertkrimen/gnat/releases/download/20140511/gonative_windows_386.exe)
-* [gonative (linux/64)](https://github.com/robertkrimen/gnat/releases/download/20140511/gonative_linux_amd64)
-* [gonative (linux/386)](https://github.com/robertkrimen/gnat/releases/download/20140511/gonative_linux_386)
+* [gonative (darwin/386)](https://github.com/robertkrimen/gnat/releases/download/2014.1/gonative_darwin_386)
+* [gonative (windows/386)](https://github.com/robertkrimen/gnat/releases/download/2014.1/gonative_windows_386.exe)
+* [gonative (linux/64)](https://github.com/robertkrimen/gnat/releases/download/2014.1/gonative_linux_amd64)
+* [gonative (linux/386)](https://github.com/robertkrimen/gnat/releases/download/2014.1/gonative_linux_386)
 
 Last, run setup:
 

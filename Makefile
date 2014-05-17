@@ -1,4 +1,4 @@
-.PHONY: setup clean reset release
+.PHONY: setup clean reset gphr_release
 
 setup: go
 
@@ -11,5 +11,5 @@ clean:
 reset: clean
 	rm -rf go
 
-release: gonative_*
-	gphr release gonative_linux_{amd64,386} gonative_{windows,darwin,freebsd}_386
+gphr_release: gonative_*
+	gphr release gonative_linux_{amd64,386} gonative_{windows,darwin,freebsd}_{amd64,386}*
